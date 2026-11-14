@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1e8">
+  <meta name="description" content="Три необычных бытовых вопроса в день. Прикиньте ответ и узнайте, насколько близко вы попали.">
+  <title>На глаз — ежедневная игра в прикидки</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="questions.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <button class="brand" type="button" id="home" aria-label="На глаз, текущий выпуск">
+        <span class="brand-mark" aria-hidden="true"></span>
+        На глаз<span class="brand-dot" aria-hidden="true">.</span>
+      </button>
+      <nav class="topnav" aria-label="Игра">
+        <button class="nav-button" type="button" data-dialog="archive">Архив</button>
+        <button class="nav-button help-button" type="button" data-dialog="rules"><span aria-hidden="true">?</span> Правила</button>
+      </nav>
+    </header>
+
+    <main>
+      <div class="edition">
+        <div class="edition-title">
+          <span id="edition-label" class="eyebrow edition-label"></span>
+          <time id="edition-date"></time>
+        </div>
+        <button id="back-today" class="text-button" type="button" hidden>К текущему выпуску →</button>
+      </div>
+      <div class="columns">
+        <section id="round" class="round" aria-label="Вопросы выпуска"></section>
+        <aside class="guide" aria-labelledby="guide-title">
+          <div class="guide-top">
+            <span class="guide-icon" aria-hidden="true">≈</span>
+            <h2 id="guide-title">Как играть</h2>
+          </div>
+          <ol>
+            <li><span>Прикиньте число. На каждый вопрос — одна попытка.</span></li>
+            <li><span>Посмотрите ответ и разбор. Если вы промахнулись вдвое, получите <strong>2×</strong>.</span></li>
+            <li><span>Пройдите три вопроса и получите средний результат.</span></li>
+          </ol>
+          <div class="guide-scale" aria-label="Чем ближе результат к единице, тем лучше">
+            <div class="guide-scale-value">1<span>×</span></div>
+            <div>
+              <strong>Точное попадание</strong>
+              <span class="guide-caption">Меньше — лучше</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <noscript>Включите JavaScript в браузере, чтобы начать игру.</noscript>
+    </main>
+
+    <footer class="footer">
+      <span id="release-note"></span>
+      <span>На глаз · игра в прикидки</span>
+    </footer>
+  </div>
+
+  <dialog id="rules" aria-labelledby="rules-heading">
+    <div class="dialog-header">
+      <h2 id="rules-heading">Правила</h2>
+      <button class="close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <p>В каждом выпуске три вопроса. Введите по одному положительному числу на вопрос. Для вычислений можно открыть калькулятор.</p>
+    <p>Ошибка — это отношение большего числа к меньшему. Если правильный ответ равен 100, ответы 50 и 200 дадут одинаковые <strong>2×</strong>. При точном попадании будет <strong>1×</strong>.</p>
+    <p>Результат выпуска — среднее трёх множителей. Правильный ответ берётся из источника или рассчитывается для примера, указанного под числом.</p>
+    <p>Прикидка по методу Ферми показывает, как оценить ответ в уме. Под ней видно, во сколько раз прикидка отличается от правильного ответа.</p>
+  </dialog>
+
+  <dialog id="archive" aria-labelledby="archive-heading">
+    <div class="dialog-header">
+      <h2 id="archive-heading">Архив выпусков</h2>
+      <button class="close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div id="archive-list" class="archive-list"></div>
+  </dialog>
+
+  <dialog id="calculator" aria-labelledby="calc-heading">
+    <div class="dialog-header">
+      <h2 id="calc-heading">Калькулятор</h2>
+      <button class="close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <form id="calc-form" novalidate>
+      <label class="sr-only" for="calc-input">Выражение</label>
+      <input id="calc-input" type="text" autocomplete="off" inputmode="none" maxlength="90" placeholder="0" spellcheck="false">
+      <p id="calc-status" class="calc-status" aria-live="polite"></p>
+      <div class="keys" aria-label="Клавиши калькулятора">
+        <button type="button" data-key="clear" aria-label="Очистить">С</button>
+        <button type="button" data-key="(">(</button>
+        <button type="button" data-key=")">)</button>
+        <button type="button" data-key="back" aria-label="Стереть символ">⌫</button>
+        <button type="button" data-key="7">7</button>
+        <button type="button" data-key="8">8</button>
+        <button type="button" data-key="9">9</button>
+        <button type="button" data-key="÷" aria-label="Разделить">÷</button>
+        <button type="button" data-key="4">4</button>
+        <button type="button" data-key="5">5</button>
+        <button type="button" data-key="6">6</button>
+        <button type="button" data-key="×" aria-label="Умножить">×</button>
+        <button type="button" data-key="1">1</button>
+        <button type="button" data-key="2">2</button>
+        <button type="button" data-key="3">3</button>
+        <button type="button" data-key="−" aria-label="Вычесть">−</button>
+        <button type="button" data-key="0">0</button>
+        <button type="button" data-key=",">,</button>
+        <button class="equals" type="submit" aria-label="Посчитать">=</button>
+        <button type="button" data-key="+" aria-label="Сложить">+</button>
+      </div>
+      <button id="use-calculation" class="primary fill" type="button">Перенести в ответ</button>
+    </form>
+  </dialog>
+</body>
+</html>
